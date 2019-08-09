@@ -1,279 +1,115 @@
 
 # [![OWASP Logo](https://github.com/OWASP/Amass/blob/master/images/owasp_logo.png) OWASP Amass](https://www.owasp.org/index.php/OWASP_Amass_Project)
 
-[![GitHub Issues](https://img.shields.io/github/issues/OWASP/Amass.svg)](https://github.com/OWASP/Amass/issues) 
 [![CircleCI Status](https://circleci.com/gh/OWASP/Amass/tree/master.svg?style=shield)](https://circleci.com/gh/OWASP/Amass/tree/master)
-[![GitHub Release](https://img.shields.io/github/release/OWASP/Amass.svg)](https://github.com/OWASP/Amass/releases) 
-[![Go Version](https://img.shields.io/badge/go-1.10-blue.svg)](https://golang.org/dl/) 
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) 
+[![GitHub tag](https://img.shields.io/github/tag/OWASP/Amass.svg)](https://github.com/OWASP/Amass/tags)
+[![Go Version](https://img.shields.io/badge/go-1.12-blue.svg)](https://golang.org/dl/)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![Contribute Yes](https://img.shields.io/badge/contribute-yes-brightgreen.svg)](https://github.com/OWASP/Amass/blob/master/CONTRIBUTING.md)
-[![Chat on Discord](https://img.shields.io/discord/433729817918308352.svg?logo=discord)](https://discord.gg/rtN8GMd) 
-[![Follow on Twitter](https://img.shields.io/twitter/follow/jeff_foley.svg?logo=twitter)](https://twitter.com/jeff_foley)
+[![Chat](https://img.shields.io/discord/433729817918308352.svg?logo=discord)](https://discord.gg/rtN8GMd)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/owaspamass.svg?logo=twitter)](https://twitter.com/owaspamass)
+
+[![Rawsec's CyberSecurity Inventory](https://inventory.rawsec.ml/img/badges/Rawsec-inventoried-FF5050_flat.svg)](https://inventory.rawsec.ml/)
+[![Bugcrowd LevelUp 0x04](https://img.shields.io/badge/Bugcrowd-LevelUp%200x04-orange.svg)](https://www.youtube.com/watch?v=C-GabM2db9A)
+[![DEF CON 27 Demo Labs](https://img.shields.io/badge/DEF%20CON%2027-Demo%20Labs-purple.svg)](https://www.defcon.org/html/defcon-27/dc-27-demolabs.html)
+[![DEF CON 27 Recon Village](https://img.shields.io/badge/DEF%20CON%2027-Recon%20Village-red.svg)](https://reconvillage.org/)
 
 ----
 
-The OWASP Amass tool suite obtains subdomain names by scraping data sources, recursive brute forcing, crawling web archives, permuting/altering names and reverse DNS sweeping. Additionally, Amass uses the IP addresses obtained during resolution to discover associated netblocks and ASNs. All the information is then used to build maps of the target networks.
+<p align="center">
+  <img alt="DNS Enumeration" src="https://github.com/OWASP/Amass/blob/master/images/amass.gif" width="577" height="685" />
+</p>
 
 ----
 
-![Network graph](https://github.com/OWASP/Amass/blob/master/images/network_06092018.png "Internet Satellite Imagery")
+The OWASP Amass Project has developed a tool to help information security professionals perform network mapping of attack surfaces and perform external asset discovery using open source information gathering and active reconnaissance techniques.
 
-## How to Install
+**Information Gathering Techniques Used:**
 
-#### Prebuilt
+* **DNS:** Basic enumeration, Brute forcing (upon request), Reverse DNS sweeping, Subdomain name alterations/permutations, Zone transfers (upon request)
+* **Scraping:** Ask, Baidu, Bing, DNSDumpster, DNSTable, Dogpile, Exalead, Google, HackerOne, IPv4Info, Netcraft, PTRArchive, Riddler, SiteDossier, ViewDNS, Yahoo
+* **Certificates:** Active pulls (upon request), Censys, CertSpotter, Crtsh, Entrust, GoogleCT
+* **APIs:** AlienVault, BinaryEdge, BufferOver, CIRCL, CommonCrawl, DNSDB, HackerTarget, Mnemonic, NetworksDB, PassiveTotal, RADb, Robtex, SecurityTrails, ShadowServer, Shodan, Spyse (CertDB & FindSubdomains), Sublist3rAPI, TeamCymru, ThreatCrowd, Twitter, Umbrella, URLScan, VirusTotal
+* **Web Archives:** ArchiveIt, ArchiveToday, Arquivo, LoCArchive, OpenUKArchive, UKGovArchive, Wayback
 
-A [precompiled version is available](https://github.com/OWASP/Amass/releases) for each release.
+----
 
-If you are on a distribution such as **Kali Linux**, and have never used snap previously, follow these steps to access snap packages:
-```
-$ sudo apt install snapd
+## Documentation
 
-$ sudo systemctl start snapd
-```
+Use the [Installation Guide](https://github.com/OWASP/Amass/blob/master/doc/install.md) to get started.
 
-Add the snap binaries to your PATH using a method similar to the following:
-```
-$ export PATH=$PATH:/snap/bin
-```
-
-If your operating environment supports [Snap](https://docs.snapcraft.io/core/install), you can [click here to install](https://snapcraft.io/amass), or perform the following from the command-line:
-```
-$ sudo snap install amass
-```
-
-If you would like snap to get you the latest unstable build of OWASP Amass, type the following command:
-```
-$ sudo snap install --edge amass
-```
-
-Periodically, execute the following command to update all your snap packages:
-```
-$ sudo snap refresh
-```
-
-#### Using Docker
-
-1. Build the [Docker](https://docs.docker.com/) image:
-```
-sudo docker build -t amass https://github.com/OWASP/Amass.git
-```
-
-2. Run the Docker image:
-```
-sudo docker run amass --passive -d example.com
-```
-
-#### From Source
-
-If you would prefer to build your own binary from the latest version of the source code, make sure you have a correctly configured **Go >= 1.10** environment. More information about how to achieve this can be found [on the golang website.](https://golang.org/doc/install) Then, take the following steps:
-
-1. Download [amass](https://github.com/OWASP/Amass/releases):
-```
-$ go get -u github.com/OWASP/Amass/...
-```
-
-2. If you wish to rebuild the binaries from the source code:
-```
-$ cd $GOPATH/src/github.com/OWASP/Amass
-
-$ go install ./...
-```
-
-At this point, the binaries should be in *$GOPATH/bin*.
-
-3. Several wordlists can be found in the following directory:
-```
-$ ls $GOPATH/src/github.com/OWASP/Amass/wordlists/
-```
-
-## Using the Tool
-
-The most basic use of the tool, which includes reverse DNS lookups and name alterations:
-```
-$ amass -d example.com
-```
-
-The example below is a good place to start with amass:
-```
-$ amass -v -ip -brute -min-for-recursive 3 -d example.com
-[Google] www.example.com
-[VirusTotal] ns.example.com
-...
-13139 names discovered - archive: 171, cert: 2671, scrape: 6290, brute: 991, dns: 250, alt: 2766
-```
-
-Add some additional domains to the enumeration:
-```
-$ amass -d example1.com,example2.com -d example3.com
-```
-
-Switches available through the amass CLI:
-
-| Flag | Description | Example |
-|------|-------------|---------|
-| -active | Enable active recon methods | amass -active -d example.com net -p 80,443,8080 |
-| -bl  | Blacklist undesired subdomains from the enumeration | amass -bl blah.example.com -d example.com |
-| -blf | Identify blacklisted subdomains from a file | amass -blf data/blacklist.txt -d example.com |
-| -brute | Perform brute force subdomain enumeration | amass -brute -d example.com |
-| -d   | Provide a domain name to include in the enumeration | amass -d example.com |
-| -df  | Specify the domains to be enumerated via text file | amass -df domains.txt |
-| -do  | Write all the data operations to a JSON file | amass -do data.json -d example.com |
-| -h   | Show the amass usage information | amass -h |
-| -ip  | Print IP addresses with the discovered names | amass -ip -d example.com |
-| -json | All discoveries written as individual JSON objects | amass -json out.json -d example.com |
-| -l   | List all the domains to be used during enumeration | amass -whois -l -d example.com |
-| -log | Log all error messages to a file | amass -log amass.log -d example.com |
-| -min-for-recursive | Number of subdomain names required for recursive brute forcing to begin | amass -brute -min-for-recursive 3 -d example.com |
-| -noalts | Disable alterations of discovered names | amass -noalts -d example.com |
-| -passive | A purely passive mode of execution | amass --passive -d example.com |
-| -norecursive | Disable recursive brute forcing | amass -brute -norecursive -d example.com |
-| -o   | Write the results to a text file | amass -o out.txt -d example.com |
-| -oA  | Output to all available file formats with prefix | amass -oA amass_scan -d example.com |
-| -r   | Specify your own DNS resolvers | amass -r 8.8.8.8,1.1.1.1 -d example.com |
-| -rf  | Specify DNS resolvers with a file | amass -rf data/resolvers.txt -d example.com |
-| -v   | Output includes data source and summary information | amass -v -d example.com |
-| -version | Print the version number of amass | amass -version |
-| -w   | Change the wordlist used during brute forcing | amass -brute -w wordlist.txt -d example.com |
-| -whois | Search using reverse whois information | amass -whois -d example.com |
-
-**If you need Amass to run faster**, then you have three choices:
-
-1. Only use the passive data sources:
-```
-$ amass --passive -d example.com
-```
-
-2. Turn off the subdomain name alteration / permutation service:
-```
-$ amass --noalts -d example.com
-```
-
-3. Increase the maximum number of file descriptors for a process:
-
-The following Linux/Unix command will show you the hard limit for file descriptors used by amass.
-```
-$ ulimit -Hn
-```
-
-The superuser can change this hard limit to grant a larger number of file descriptors to running processes. Raising this limit will cause amass to perform more DNS resolutions simultaneously, and allow enumerations to complete faster. On Linux systems, this can usually be accomplished within the **/etc/security/limits.conf** file.
-
-#### amass.netdomains
-
-**Caution:** If you use the amass.netdomains tool, it will attempt to reach out to every IP address within the identified infrastructure and obtain domains names from reverse DNS requests and TLS certificates. This is "loud" and can reveal your reconnaissance activities to the organization being investigated.
-
-Lookup ASNs by searching the descriptions registered by organizations:
-```
-$ amass.netdomains -org Facebook
-32934, US, ARIN, FACEBOOK - Facebook, Inc., US
-54115, US, ARIN, FACEBOOK-CORP - Facebook Inc, US
-63293, US, ARIN, FACEBOOK-OFFNET - Facebook, Inc., US
-```
-
-To discover all domains hosted within target ASNs, use the following option:
-```
-$ amass.netdomains -asn 13374,14618
-```
-
-To investigate target CIDRs, use this option:
-```
-$ amass.netdomains -cidr 192.184.113.0/24,104.154.0.0/15
-```
-
-For specific IPs or address ranges, use this option:
-```
-$ amass.netdomains -addr 192.168.1.44,192.168.2.1-64
-```
-
-By default, port 443 will be checked for certificates, but the ports can be changed as follows:
-```
-$ amass.netdomains -cidr 192.168.1.0/24 -p 80,443,8080
-```
-
-#### amass.viz
-
-Create enlightening network graph visualizations that provide structure to the information you gather. This tool requires an input file generated by the amass '-do' flag.
-
-Switches for outputting the DNS and infrastructure findings as a network graph:
-
-| Flag | Description | Example |
-|------|-------------|---------|
-| -d3  | Output a D3.js v4 force simulation HTML file | amass.viz -d3 net.html -i data_ops.json |
-| -gexf | Output to Graph Exchange XML Format (GEXF) | amass.viz -gephi net.gexf -i data_ops.json |
-| -graphistry | Output Graphistry JSON | amass.viz -graphistry net.json -i data_ops.json |
-| -visjs | Output HTML that employs VisJS | amass.viz -visjs net.html -i data_ops.json |
-
-
-#### amass.db
-
-Have amass send all the DNS and infrastructure information gathered to a graph database. This tool requires an input file generated by the amass '-do' flag.
-
-```
-$ amass.db -neo4j neo4j:DoNotUseThisPassword@localhost:7687 -i data_ops.json
-```
-
-## Integrating OWASP Amass into Your Work
-
-If you are using the amass package within your own Go code, be sure to properly seed the default pseudo-random number generator:
-```go
-import(
-    "fmt"
-    "math/rand"
-    "time"
-
-    "github.com/OWASP/Amass/amass"
-)
-
-func main() {
-    rand.Seed(time.Now().UTC().UnixNano())
-
-    enum := amass.NewEnumeration()
-
-    go func() {
-        for result := range enum.Output {
-            fmt.Println(result.Name)
-        }
-    }()
-
-    enum.AddDomain("example.com")
-    enum.Start()
-}
-```
-
-## Settings for the OWASP Amass Maltego Local Transform
-
-1. Setup a new local transform within Maltego:
-
-![Maltego setup process](https://github.com/OWASP/Amass/blob/master/images/maltegosetup1.png "Setup")
-
-2. Configure the local transform to properly execute the go program:
-
-![Maltego configuration](https://github.com/OWASP/Amass/blob/master/images/maltegosetup2.png "Configure")
-
-3. Go into the Transform Manager, and disable the **debug info** option:
-
-![Disabling debug](https://github.com/OWASP/Amass/blob/master/images/maltegosetup3.png "Disable Debug")
+Go to the [User's Guide](https://github.com/OWASP/Amass/blob/master/doc/user_guide.md) for additional information.
 
 ## Community
 
- - [Discord Server](https://discord.gg/rtN8GMd) - Discussing OSINT, network recon and developing security tools using Go
+Join our Discord server: [![Chat on Discord](https://img.shields.io/discord/433729817918308352.svg?logo=discord)](https://discord.gg/rtN8GMd)
+
+### Project Leader
+
+[![Follow on Twitter](https://img.shields.io/twitter/follow/jeff_foley.svg?logo=twitter)](https://twitter.com/jeff_foley)
+
+* OWASP: [Caffix](https://www.owasp.org/index.php/User:Caffix)
+* GitHub: [@caffix](https://github.com/caffix)
+
+### Contributors
+
+This project improves thanks to all the people who contribute:
+
+[![Follow on Twitter](https://img.shields.io/twitter/follow/emtunc.svg?logo=twitter)](https://twitter.com/emtunc)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/kalbasit.svg?logo=twitter)](https://twitter.com/kalbasit)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/fork_while_fork.svg?logo=twitter)](https://twitter.com/fork_while_fork)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/rbadguy1.svg?logo=twitter)](https://twitter.com/rbadguy1)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/danjomart.svg?logo=twitter)](https://twitter.com/danjomart)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/shane_ditton.svg?logo=twitter)](https://twitter.com/shane_ditton)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/dhauenstein.svg?logo=twitter)](https://twitter.com/dhauenstein)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/THB_STX.svg?logo=twitter)](https://twitter.com/THB_STX)
+[![Email NanoDano](https://img.shields.io/badge/NanoDano-nanodano%40devdungeon.com-blue.svg)](mailto:nanodano@devdungeon.com)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/DanielMiessler.svg?logo=twitter)](https://twitter.com/DanielMiessler)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/sec_for_safety.svg?logo=twitter)](https://twitter.com/sec_for_safety)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/ngkogkos.svg?logo=twitter)](https://github.com/ngkogkos)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/Jhaddix.svg?logo=twitter)](https://twitter.com/Jhaddix)
+[![Follow on Twitter](https://img.shields.io/twitter/follow/Vltraheaven.svg?logo=twitter)](https://twitter.com/Vltraheaven)
 
 ## Mentions
 
- - [Subdomain Takeover: Finding Candidates](https://0xpatrik.com/subdomain-takeover-candidates/)
- - [Paul's Security Weekly #564: Technical Segment - Bug Bounty Hunting](https://wiki.securityweekly.com/Episode564)
- - [The Bug Hunters Methodology v3(ish)](https://www.youtube.com/watch?v=Qw1nNPiH_Go)
- - [Doing Recon the Correct Way](https://enciphers.com/doing-recon-the-correct-way/)
- - [Discovering subdomains](https://www.sjoerdlangkemper.nl/2018/06/20/discovering-subdomains/)
- - [Best Hacking Tools List for Hackers & Security Professionals 2018](http://kalilinuxtutorials.com/best-hacking-tools-list/amp/)
- - [Amass - Subdomain Enumeration Tool](https://hydrasky.com/network-security/kali-tools/amass-subdomain-enumeration-tool/)
- - [Subdomain enumeration](http://10degres.net/subdomain-enumeration/)
- - [Asset Discovery: Doing Reconnaissance the Hard Way](https://0xpatrik.com/asset-discovery/)
- - [Project Sonar: An Underrated Source of Internet-wide Data](https://0xpatrik.com/project-sonar-guide/)
- - [Go is for everyone](https://changelog.com/gotime/71)
- - [Top Five Ways the Red Team breached the External Perimeter](https://medium.com/@adam.toscher/top-five-ways-the-red-team-breached-the-external-perimeter-262f99dc9d17)
+* [8 Free Tools to Be Showcased at Black Hat and DEF CON](https://www.darkreading.com/application-security/8-free-tools-to-be-showcased-at-black-hat-and-def-con/d/d-id/1335356?image_number=5)
+* [amass — Automated Attack Surface Mapping](https://danielmiessler.com/study/amass/)
+* [Aquatone — A Tool for Domain Flyovers](https://github.com/michenriksen/aquatone)
+* [Collaborating with the Crowd – Recapping LevelUp 0X04](https://www.bugcrowd.com/blog/recapping_levelup_0x04/)
+* [Subdomain Enumeration: 2019 Workflow](https://0xpatrik.com/subdomain-enumeration-2019/)
+* [REMOTE CODE EXECUTION ! 😜 Recon Wins](https://medium.com/@vishnu0002/remote-code-execution-recon-wins-e9c1db79f3da)
+* [Where You’ll Find Us: An Overview of SecurityTrails Integrations](https://securitytrails.com/blog/integrations-overview)
+* [Web tools, or where to start a pentester?](https://habr.com/en/company/dsec/blog/452836/)
+* [Tool for detailed DNS enumeration and creation of network infrastructure maps](https://www.gurudelainformatica.es/2019/05/herramienta-para-enumeracion-detallada.html)
+* [Top 7 Subdomain Scanner Tools: Find Subdomains in Seconds](https://securitytrails.com/blog/subdomain-scanner-find-subdomains)
+* [Cyber Talent Gap: How to Do More With Less](https://www.digitalshadows.com/blog-and-research/cyber-talent-gap-how-to-do-more-with-less/)
+* [My Recon Process — DNS Enumeration](https://medium.com/@noobhax/my-recon-process-dns-enumeration-d0e288f81a8a)
+* [Week in OSINT #2019–16: From OSINT for pentesting, to OCR and OWASP](https://medium.com/week-in-osint/week-in-osint-2019-16-8ccfe0da1a70)
+* [Stop Using Python for Subdomain Enumeration](http://sec.alexflor.es/post/subdomain_enum/)
+* [My Personal OSINT Techniques, Part 1 of 2: Key & Layer, Contingency Seeding](https://0x00sec.org/t/my-personal-osint-techniques-part-1-of-2-key-layer-contingency-seeding/)
+* [Subdomain Enumeration Tools – 2019 Update](https://www.yeahhub.com/subdomain-enumeration-tools-2019-update/)
+* [Leaked Salesforce API access token at IDEA.com](https://medium.com/@jonathanbouman/leaked-salesforce-api-access-token-at-ikea-com-132eea3844e0)
+* [Week in OSINT #2019–11: This time a collection of mostly tools and sites](https://medium.com/week-in-osint/week-in-osint-2019-11-62774ffe7a2)
+* [Bug Hunting Methodology (part-1)](https://blog.usejournal.com/bug-hunting-methodology-part-1-91295b2d2066)
+* [100 ways to discover (part 1)](https://sylarsec.com/2019/01/11/100-ways-to-discover-part-1/)
+* [Pose a Threat: How Perceptual Analysis Helps Bug Hunters](https://www.bishopfox.com/news/2018/12/appsec-california-pose-a-threat-how-perpetual-analysis-helps-bug-hunters/)
+* [A penetration tester’s guide to subdomain enumeration](https://blog.appsecco.com/a-penetration-testers-guide-to-sub-domain-enumeration-7d842d5570f6)
+* [Abusing access control on a large online e-commerce site to register as supplier](https://medium.com/@fbotes2/governit-754becf85cbc)
+* [Black Hat Training, Making the Cloud Rain Shells!: Discovery and Recon](https://www.blackhat.com/eu-18/training/schedule/index.html#aws--azure-exploitation-making-the-cloud-rain-shells-11060)
+* [Subdomains Enumeration Cheat Sheet](https://pentester.land/cheatsheets/2018/11/14/subdomains-enumeration-cheatsheet.html)
+* [Search subdomains and build graphs of network structure with Amass](https://miloserdov.org/?p=2309)
+* [Getting started in Bug Bounty](https://medium.com/@ehsahil/getting-started-in-bug-bounty-7052da28445a)
+* [Source code disclosure via exposed .git folder](https://pentester.land/tutorials/2018/10/25/source-code-disclosure-via-exposed-git-folder.html)
+* [Amass, the best application to search for subdomains](https://www.h1rd.com/hacking/amass-para-buscar-subdominios)
+* [Subdomain Takeover: Finding Candidates](https://0xpatrik.com/subdomain-takeover-candidates/)
+* [Paul's Security Weekly #564: Technical Segment - Bug Bounty Hunting](https://wiki.securityweekly.com/Episode564)
+* [The Bug Hunters Methodology v3(ish)](https://www.youtube.com/watch?v=Qw1nNPiH_Go)
+* [Doing Recon the Correct Way](https://enciphers.com/doing-recon-the-correct-way/)
+* [Discovering subdomains](https://www.sjoerdlangkemper.nl/2018/06/20/discovering-subdomains/)
+* [Asset Discovery: Doing Reconnaissance the Hard Way](https://0xpatrik.com/asset-discovery/)
+* [Project Sonar: An Underrated Source of Internet-wide Data](https://0xpatrik.com/project-sonar-guide/)
+* [Top Five Ways the Red Team breached the External Perimeter](https://medium.com/@adam.toscher/top-five-ways-the-red-team-breached-the-external-perimeter-262f99dc9d17)
 
-## Example Amass Terminal Capture 
+## Stargazers over Time
 
-Presented at Facebook (and shared publically) for the Sept. 2018 OWASP London Chapter meeting:
-
-[![asciicast](https://asciinema.org/a/v6B1qdMRlLRUflpkwRPhvCTaY.png)](https://asciinema.org/a/v6B1qdMRlLRUflpkwRPhvCTaY)
+ [![Stargazers over Time](https://starcharts.herokuapp.com/OWASP/Amass.svg)](https://starcharts.herokuapp.com/OWASP/Amass)
